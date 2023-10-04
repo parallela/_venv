@@ -19,7 +19,7 @@ RUN apt-get update && apt-get install -y \
     && docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd zip
 
 # Installing Redis
-RUN apt-get install -y \ redis-server
+RUN apt-get install -y redis-server
 
 # Enable redis ext
 
@@ -39,6 +39,11 @@ RUN apt-get install -y \
 	vim \
 	nano
 
+# Supervisor
+RUN apt-get install -y supervisor
+
+# Creating conf directory for supervisor
+RUN mkdir -p /etc/supervisor/conf.d
 
 # Network tools
 RUN apt-get update && apt-get install -y \
@@ -53,6 +58,14 @@ RUN echo "alias pu='./vendor/phpunit/phpunit/phpunit'" >> ~/.bashrc \
     && echo "alias puf='./vendor/phpunit/phpunit/phpunit --filter'" >> ~/.bashrc \
     && echo "alias c='clear'" >> ~/.bashrc 
 
+COPY ./init.sh /usr/local/bin/init.sh
+
+# Make init.sh executable
+RUN dos2unix /usr/local/bin/init.sh
+RUN chmod +x /usr/local/bin/init.sh
 
 #Exposing ports
 EXPOSE 80 6379 3306
+
+# Entry proccess point
+CMD ["/usr/local/bin/init.sh"]

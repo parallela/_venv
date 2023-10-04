@@ -29,7 +29,7 @@ services:
     networks:
       - venv
     volumes:
-      - ./docker/mysql:/var/lib/mysql
+      - ./drive/mysql:/var/lib/mysql
   redis:
     image: redis:latest
     ports:
@@ -46,7 +46,7 @@ services:
         soft: -1
         hard: -1
     volumes:
-      - ./docker/elasticsearch:/usr/share/elasticsearch/data
+      - ./drive/elasticsearch:/usr/share/elasticsearch/data
     ports:
       - "9200:9200"
     networks:
