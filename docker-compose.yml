@@ -1,0 +1,56 @@
+version: '3'
+services:
+  main:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    volumes:
+      - ../:/var/www/
+    environment:
+      MYSQL_ROOT_PASSWORD: "root"
+    ports:
+      - "80:80"
+      - "9005:9005"
+    depends_on:
+      - mysql
+      - redis
+      - elasticsearch
+    networks:
+      - venv
+  mysql:
+    image: mysql
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DOCKER_MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${DOCKER_MYSQL_DATABASE}
+    ports:
+      - "127.0.0.1:3306:3306"
+    networks:
+      - venv
+    volumes:
+      - ./docker/mysql:/var/lib/mysql
+  redis:
+    image: redis:latest
+    ports:
+      - "6379:6379"
+    networks:
+      - venv
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.17.10
+    environment:
+      - discovery.type=single-node
+      - "ES_JAVA_OPTS=-Xms1G -Xmx1G"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - ./docker/elasticsearch:/usr/share/elasticsearch/data
+    ports:
+      - "9200:9200"
+    networks:
+      - venv
+networks:
+  venv:
+    driver: bridge
