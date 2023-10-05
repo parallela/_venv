@@ -64,6 +64,22 @@ COPY ./init.sh /usr/local/bin/init.sh
 RUN dos2unix /usr/local/bin/init.sh
 RUN chmod +x /usr/local/bin/init.sh
 
+#Wget
+RUN apt-get install -y wget 
+
+#Dockerize
+RUN wget https://github.com/jwilder/dockerize/releases/download/v0.6.1/dockerize-linux-amd64-v0.6.1.tar.gz \
+    && tar -C /usr/local/bin -xzvf dockerize-linux-amd64-v0.6.1.tar.gz \
+    && rm dockerize-linux-amd64-v0.6.1.tar.gz
+
+COPY /configs/nginx/laravel-nginx-config.conf /etc/nginx/conf.d/default.conf.tmpl
+
+#SuperVisor
+RUN mkdir -p /etc/supervisor/conf.d
+
+COPY /configs/supervisor/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+COPY /configs/supervisor/main.conf /etc/supervisor/conf.d/main.conf
+
 #Exposing ports
 EXPOSE 80 6379 3306
 
