@@ -13,6 +13,7 @@ RUN apt-get update && apt-get install -y \
     zip \
     unzip \
     nginx \
+    npm \
     default-mysql-server \
     default-mysql-client \
     procps \
