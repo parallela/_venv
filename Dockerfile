@@ -82,7 +82,7 @@ COPY /configs/supervisor/supervisord.conf /etc/supervisor/conf.d/supervisord.con
 COPY /configs/supervisor/main.conf /etc/supervisor/conf.d/main.conf
 
 #Exposing ports
-EXPOSE 80 6379 3306
+EXPOSE 80 6379 3306 5173
 
 # Entry proccess point
 CMD ["/usr/local/bin/init.sh"]

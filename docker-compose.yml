@@ -11,6 +11,7 @@ services:
     ports:
       - "80:80"
       - "9005:9005"
+      - "5173:5173"
     depends_on:
       - mysql
       - redis
