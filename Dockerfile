@@ -28,7 +28,7 @@ RUN pecl install -o -f redis \
 	&& docker-php-ext-enable redis
 
 # PHP Extensions
-RUN docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd zip
+RUN docker-php-ext-install intl pdo_mysql mbstring exif pcntl bcmath gd zip
 
 # PHP Composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
